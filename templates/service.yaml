@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: "ocp-helm-test"
+  annotations:
+    description: Exposes and load balances the application pods
+spec:
+  ports:
+  - name: web
+    port: 3000
+    targetPort: 3000
+  selector:
+    name: "ocp-helm-test"

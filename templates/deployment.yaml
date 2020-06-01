@@ -1,0 +1,49 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: "ocp-helm-test"
+  annotations:
+    description: Defines how to deploy the application server
+    template.alpha.openshift.io/wait-for-ready: 'true'
+spec:
+  strategy:
+    type: Rolling
+  triggers:
+  - type: ImageChange
+    imageChangeParams:
+      automatic: true
+      containerNames:
+      - ocp-helm-test
+      from:
+        kind: ImageStreamTag
+        name: "nodejs-example:latest"
+  - type: ConfigChange
+  replicas: 1
+  selector:
+    name: "ocp-helm-test"
+  template:
+    metadata:
+      name: "ocp-helm-test"
+      labels:
+        name: "ocp-helm-test"
+    spec:
+      containers:
+      - name: ocp-helm-test
+        image: " "
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          timeoutSeconds: 3
+          initialDelaySeconds: 3
+          httpGet:
+            path: "/"
+            port: 3000
+        livenessProbe:
+          timeoutSeconds: 3
+          initialDelaySeconds: 30
+          httpGet:
+            path: "/"
+            port: 3000
+        resources:
+          limits:
+            memory: "100Mi"

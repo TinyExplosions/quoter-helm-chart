@@ -1,0 +1,31 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: "ocp-helm-test"
+  annotations:
+    description: Defines how to build the application
+spec:
+  source:
+    type: Git
+    git:
+      uri: "https://github.com/TinyExplosions/ocp-quoter"
+      ref: 
+    contextDir: 
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: "openshift"
+        name: nodejs:12
+      env:
+      - name: NPM_MIRROR
+        value: 
+  output:
+    to:
+      kind: ImageStreamTag
+      name: ocp-helm-test:latest
+  triggers:
+  - type: ImageChange
+  - type: ConfigChange
+  postCommit: {}

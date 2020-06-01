@@ -1,0 +1,9 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: "ocp-helm-test"
+spec:
+  host: 
+  to:
+    kind: Service
+    name: "ocp-helm-test"
